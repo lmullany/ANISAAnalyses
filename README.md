@@ -24,4 +24,5 @@ It is the last folder (Stata Code) where all the action lies. In this folder, th
   - **CaseControlDefinition and CaseControlDefinition/CaseControlOutputFiles/**: This is where files related to Case Control Definition will be created and stored
   - **Flowcharts**: This is where pregnancy and baby level flowchart files are created, along with a PDF version of site-specific and overall flowcharts 
   - **Lab Working File and Lab Working File/LabOutputFiles**: This is where the lab output files will be created.
+  - Numerous output files will also be created in the `Stata Code` directory, and will be copied over to the `AnalyticFilesForExternalSharing` folder
 
