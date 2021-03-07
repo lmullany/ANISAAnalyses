@@ -5,11 +5,6 @@ program drawCombinedFlowchart
 	syntax, [site(real 0)] [rerun] [india] [bangpak] [showReaNotReg]
 	qui {
 	
-	//temporariliy add subfolder to ado path
-	adopath + ".\flowchartCode"
-
-
-
 	//keep if site is specified, otherwise
 	capture assert inlist(`site',0, 1, 3, 4, 5, 6)==1
 	if _rc!=0 {
@@ -23,8 +18,8 @@ program drawCombinedFlowchart
 		set more off
 		//We need to rerun the do file to create the source, if rerun has been specified
 		if "`rerun'"!= "" {
-			qui run createPregnancyLevelFlowchart
-			qui run createBabyLevelFlowchart
+			qui run "../stata_do_files/createPregnancyLevelFlowchart.do"
+			qui run "../stata_do_files/createBabyLevelFlowchart.do"
 		}
 		
 		if inlist(`site',1,3,4,5,6)==1 {
@@ -335,9 +330,6 @@ program drawCombinedFlowchart
 			saveold "../Lab Working File/LabOutputFiles/FinalEtiologyAnalyticFile_Removed.dta", replace
 		restore
 
-
-		//Remove from ado path
-		adopath - ".\flowchartCode"
 
 	}	
 end

@@ -53,7 +53,7 @@ gen			GenSp = Genus+Species
 gen 		LabID = substr( SpecimenID,2,5)
 replace		GenSp = "9999" if GenSp=="." | GenSp==""
 sort		GenSp
-merge		m:1 GenSp using "OtherFiles/OrgName.dta"
+merge		m:1 GenSp using "../../Source Anisa Tables/OrgName.dta"
 gen 		GSName = substr( GenusName,1,4)+"."+substr( SpName ,1,4)
 drop 		if _merge==2 | (GenSp=="9999" & SLNo==3)
 drop 		_merge Genus Species GenusCode SpCode GenusName SpName 
@@ -73,7 +73,7 @@ for var 	Type*: replace X="1" if X=="Definite Pathogen"
 for var 	Type*: replace X="2" if X=="Probable Pathogen" 
 destring 	Type*, replace
 
-merge		1:1 SpecimenID using BloodCultureCommittee/bloodCommitteeFinalResults, gen(BCMatch) keepusing(childID BCCReviewed reasonNotReviewed FinalPathogen FinalDecision FinalDetermination bc_org)
+merge		1:1 SpecimenID using "../../Source Anisa Tables/bloodCommitteeFinalResults.dta", gen(BCMatch) keepusing(childID BCCReviewed reasonNotReviewed FinalPathogen FinalDecision FinalDetermination bc_org)
 capture assert BCMatch==3
 if _rc!=0 {
 	di as error "We have rows in the blood culture committee file that don't match the source"
@@ -96,7 +96,7 @@ foreach var of varlist ChocolateGrowth1- Type3 GenSpName {
 }
 
 gen		LabVar=0
-do		"AncillaryDoFiles/ANISA - Variable labels - Lab"
+do		"../stata_do_files/ANISA - Variable labels - Lab"
 
 order 		SiteCode childID SpecimenID LabID GenSpName GenSp1 GenSpName1 Type1 GenSp2 GenSpName2 Type2 GenSp3 GenSpName3 Type3 BCCReviewed reasonNotReviewed FinalPathogen FinalDecision FinalDetermination FinalDeterminationFrm bc_org
 save		LabOutputFiles/BldOrg, replace
@@ -161,7 +161,7 @@ save		LabOutputFiles/AntibiogramData, replace
 //			replace		AntCode="80" if GenSp=="1838" & AntCode=="10" & (substr(SpecimenID,2,1)=="3" | substr(SpecimenID,2,1)=="4" )
 ***********************************************************************v
 sort 		GenSp AntCode
-merge		m:1 GenSp AntCode using OtherFiles/ZoneDiam.dta
+merge		m:1 GenSp AntCode using "../../Source Anisa Tables/ZoneDiam.dta"
 
 gen		SiteCode =substr(SpecimenID,2,1)
 sort 		SiteCode SpecimenID
@@ -221,7 +221,7 @@ gen			PolymyxinSen		= 8		//Sensitivity42
 
 for var		*Sen: replace X=8 if X==.
 gen 		LabVar=1
-do			"AncillaryDoFiles/ANISA - Variable labels - Lab"
+do			"../stata_do_files/ANISA - Variable labels - Lab"
 //drop		RMin* RMax* IMin* IMax* SMin* SMax*
 sort 		SpecimenID
 save 		LabOutputFiles/AntibioticSensitivityData, replace
@@ -268,7 +268,7 @@ replace		OrgAntibiogram = GenSpName3 if Antibiogram==3
 for   var 	*Sen: replace X=. 	if GenSpName==""
 drop 		EnteroScore* NonEnteroScore* EditUser Reported  Isolate1- Isolate3   
 replace		LabVar=2
-do			"AncillaryDoFiles/ANISA - Variable labels - Lab"
+do			"../stata_do_files/ANISA - Variable labels - Lab"
 
 //========================================================================================*
 //***		Seperate the Growth
@@ -281,7 +281,7 @@ do			"AncillaryDoFiles/ANISA - Variable labels - Lab"
 
 renvars		Org0113- Org9999\ EschColi SalmEnter SalmPTyphi SalmSp SalmTyphi KlebOxyt KlebPneu KlebSp EnteAerog EnteCloa EnteSp CitrFreun CitrSp SerrMarc SerrSp ProtMirab ProtSp ProtVulg MorgMorg MorgSp ProvAlcal ProvRett ProvSp ProvStuar YersEnter YersPest YersSp EdwaSp EdwaTarda HafnAlvei HafnSp AeroHydr AeroSp PlesShigel PlesSp VibrSp StapAureus StapEpider StapSapr StapSp StreAgal StrePneu StrePyog StreSp EntercSp ListMono ListSp NeisGonor NeisMenin PseuAerug PseuSp CampSp HaemInfl HaemPInfl HaemSp AcinSp FlavSp MoreCatar AnaeNone StapCoagNeg StrepCoagNeg StrepOral BacilSp CorynSp ClostPerf ClostSp CampJej AlclFaecal BrevSp BurkSp BurkCep MicroSp StenMalt GrmNegEntr KocSp RhodSp DipthSp Miss
 replace 	LabVar=3
-do			"AncillaryDoFiles/ANISA - Variable labels - Lab"
+do			"../stata_do_files/ANISA - Variable labels - Lab"
 compress 	*
 renvars		AntValue*	\ AmikacinAVal AmpicillinAVal AzythromicinAVal CefotaximeAVal CeftazidimeAVal CeftriaxoneAVal CephalexinAVal ChloramphenicolAVal CiprofloxacinAVal CloxacillinAVal CotrimoxazoleAVal ErythromicinAVal GentamicinAVal ImipenemAVal NalidixicAcidAVal NetilmicinAVal OxacillinAVal PenicillinAVal TetracyclineAVal CefepimeAVal LevofloxacinAVal MeropenemAVal AztreonamAVal CefiximeAVal CarbenicillinAVal VancomycinAVal CefuroximParenAVal CefuroximeOralAVal ClindamycinAVal AmoxicillinAVal CefoxitinAVal FusidicAcidAVal LinezolidAVal MetronidazoleAVal OfloxacinAVal PolymyxinBAVal TazobactamAVal TobramycinAVal ClavulanicAcidAVal
 renvars		EStpValue*	\ AmikacinEVal AmpicillinEVal AzythromicinEVal CefotaximeEVal CeftazidimeEVal CeftriaxoneEVal CephalexinEVal ChloramphenicolEVal CiprofloxacinEVal CloxacillinEVal CotrimoxazoleEVal ErythromicinEVal GentamicinEVal ImipenemEVal NalidixicAcidEVal NetilmicinEVal OxacillinEVal PenicillinEVal TetracyclineEVal CefepimeEVal LevofloxacinEVal MeropenemEVal AztreonamEVal CefiximeEVal CarbenicillinEVal VancomycinEVal CefuroximParenEVal CefuroximeOralEVal ClindamycinEVal AmoxicillinEVal CefoxitinEVal FusidicAcidEVal LinezolidEVal MetronidazoleEVal OfloxacinEVal PolymyxinBEVal TazobactamEVal TobramycinEVal ClavulanicAcidEVal
@@ -472,7 +472,7 @@ preserve
 	label var URUP_BTAC "Detected in Blood: U. parvum (biovar 1; serovars 1, 3, 6, 14), U. urealyticum (b"
 	
 	///6 manual updates at this point!!!
-	merge 1:1 bloodID using "change_ESCH_BTAC_toPositive.dta", keepusing(bloodID)
+	merge 1:1 bloodID using "../../Source Anisa Tables/change_ESCH_BTAC_toPositive.dta", keepusing(bloodID)
 	assert inlist(_merge,1,3)==1
 	replace ECSH_BTAC =1 if _merge==3
 	drop _merge
@@ -556,7 +556,7 @@ restore
 	
 	
 	///171 manual updates at this point!!!
-	merge 1:1 respID using "change_ESCH_RTAC_toPositive.dta", keepusing(respID)
+	merge 1:1 respID using "../../Source Anisa Tables/change_ESCH_RTAC_toPositive.dta", keepusing(respID)
 	assert inlist(_merge,1,3)==1
 	replace ECSH_RTAC =1 if _merge==3
 	drop _merge

@@ -12,7 +12,7 @@ program define executeALLMainAnalyses
 	qui {
 
 	* run setup to ensure access to global commands
-	qui do setup.do
+	qui do "stata_do_files/setup.do"
 
 	************************************
 	****	STEP 1 - Creation (if requested)
@@ -20,14 +20,17 @@ program define executeALLMainAnalyses
 	
 	if "`includeCreation'"!="" {
 		noi di _continue as text "Running base creation code (takes time)..."
-		do createAnisaWorkingFiles
+		do "stata_do_files/createAnisaWorkingFiles"
 		noi di as result "...complete"
 	}
 	
 	************************************
 	****	STEP 2 - Case Control Algorithm
 	************************************
+	capture mkdir "CaseControlDefinition"
+	capture mkdir "CaseControlDefinition/CaseControlOutputFiles"
 	capture cd "CaseControlDefinition/"
+	
 	noi di _continue as text "Running Case Control Algorithm..."
 	noi defineCaseControlRows, includeNonSpecimens
 	noi di as result "...complete"
@@ -36,6 +39,8 @@ program define executeALLMainAnalyses
 	************************************
 	****	STEP 3 - EtiologyTempFile
 	************************************
+	capture mkdir "Lab Working File"
+	capture mkdir "Lab Working File/LabOutputFiles"
 	capture cd "Lab Working File/"
 	noi di _continue as text "Preparing Lab and Etiology Files..."
 	qui createFinalEtiologyAnalysisFile, `prepareFiles'
@@ -45,11 +50,13 @@ program define executeALLMainAnalyses
 	************************************
 	****	STEP 4 - Execute Flowchart Files
 	************************************
+	capture mkdir "Flowcharts"
 	capture cd "Flowcharts/"
 	noi di _continue as text "Executing Flowchart Process..."
 	qui drawCombinedFlowchart, rerun
-	qui do createPLF
-	qui do createBLF
+	qui do "../stata_do_files/createPLF.do"
+	qui do "../stata_do_files/createBLF.do"
+	noi generateAllFlowchartPDFs
 	noi di as result "...complete"
 	capture cd ..
 	
@@ -64,12 +71,6 @@ program define executeALLMainAnalyses
 		shell "copyFilesForSharing.bat"	
 	}
 	
-	************************************
-	****	STEP 6 - make all STATA Version 12
-	**** CANCELLED
-	************************************
-	*cd "../AnalyticFilesForExternalSharing"
-	*noi convertToVersion12, compress
 	
 	cd "../Stata Code"
 	
