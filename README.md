@@ -5,7 +5,7 @@ This repo provides Stata do and ado files that will create numerous analtyic fil
 - Source Anisa Tables: this subfolder contains only .dta (Stata) files that are the source/raw tables from which analytic files are derived
 - Stata Code: this subfolder contains all the analytic code that will generate files from the source .dta file
 
-It is the last folder (Stata Code) where all the action lies. In this folder, there are initally two subfolders that contain `.do` files (`stata_do_files/`) and `.ado/.mo` (`stata_source_files/`) that are the workhorses of this repo. All the code can be run with one stata command line call, using the "executeALLMainAnalyses.ado" file.
+It is the last folder (Stata Code) where all the action lies. In this folder, there are initally two subfolders that contain `.do` files (`stata_do_files/`) and `.ado/.mo` (`stata_source_files/`) that are the workhorses of this repo. All the code can be run with one stata command line call, using the `executeALLMainAnalyses.ado` file.
 
 ### Requirements:
 - Stata 13 or above
@@ -13,7 +13,7 @@ It is the last folder (Stata Code) where all the action lies. In this folder, th
 - Write access to this structure: during the process of running `executeALLMainAnalyses` a number of sub-folders will created using Stata's `mkdir` command; these will fail (quietly) if the running user/process does not have write access. Even on quiet failure of the `mkdir` commands, subsequent calls by the various `.ado/.do/.mo` files will call these newly created directories, and thus will fail without write access. 
 - You must have rights to update the adopath in Stata. The very first task of the `executeALLMainAnalyses` file is to call `stata_do_files/setup.do`, which simply ensures that all subsequent code will have access to `.ado/.mo` files in `stata_source_files/` subfolder. Without adding this to the adopath, the code will not be able to find the numerous user-written commands that facilitate the derivation of these analytic files.
 
-### Excecution:
+### Execution:
 - clone the repo
 - open your version of Stata
 - navigate to `<your repo location>/Stata Code/`
