@@ -7,7 +7,7 @@ program define createFinalEtiologyAnalysisFile
 qui {
 
     if "`prepareFiles'" != "" {
-        qui run "ANISA - Blood and NP-OP file preparation.do"
+        qui run "../stata_do_files/ANISA - Blood and NP-OP file preparation.do"
     }
     
 	clear
@@ -107,7 +107,7 @@ program _refineBloodFile
 	
 	preserve
 		//get the WetChemistryFile
-		use "WetChem/AnisaWetChemistryResults.dta",clear
+		use "../../Source Anisa Tables/AnisaWetChemistryResults.dta",clear
 		keep if WetChTarget==1 //keeping the e.coil targets only
 		keep if substr(SampleName,1,1)=="B"
 		tempfile bloodEColiWetChem
@@ -158,7 +158,7 @@ program _refineRespFile
 	
 	preserve
 		//get the WetChemistryFile
-		use "WetChem/AnisaWetChemistryResults.dta",clear
+		use "../../Source Anisa Tables/AnisaWetChemistryResults.dta",clear
 		keep if WetChTarget==1 //keeping the e.coil targets only
 		keep if substr(SampleName,1,1)=="R"
 		tempfile respEColiWetChem
