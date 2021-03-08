@@ -1,9 +1,9 @@
 # ANISA Stata Code to Create Analytic Files and Flowcharts
 
 This repo provides Stata do and ado files that will create numerous analtyic files. At the outset, there are three main folders:
-- AnalyticFilesForExternalSharing: this subfolder is empty initially, but will receive a set of created analytic files
-- Source Anisa Tables: this subfolder contains only .dta (Stata) files that are the source/raw tables from which analytic files are derived
-- Stata Code: this subfolder contains all the analytic code that will generate files from the source .dta file
+- **`AnalyticFilesForExternalSharing`**: this subfolder is empty initially, but will receive a set of created analytic files
+- **`Source Anisa Tables`**: this subfolder contains only .dta (Stata) files that are the source/raw tables from which analytic files are derived
+- **`Stata Code`**: this subfolder contains all the analytic code that will generate files from the source .dta file
 
 It is the last folder (Stata Code) where all the action lies. In this folder, there are initally two subfolders that contain `.do` files (`stata_do_files/`) and `.ado/.mo` (`stata_source_files/`) that are the workhorses of this repo. All the code can be run with one stata command line call, using the `executeALLMainAnalyses.ado` file.
 
